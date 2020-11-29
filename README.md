@@ -1,4 +1,3 @@
-# ActivityTracker
 Mobile Application Development
 
 CS 345M
