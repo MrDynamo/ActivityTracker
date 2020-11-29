@@ -15,6 +15,9 @@
 		3EDAE3F6257458FD00B3845E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EDAE3F4257458FD00B3845E /* LaunchScreen.storyboard */; };
 		3EDAE401257458FE00B3845E /* ActivityTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDAE400257458FE00B3845E /* ActivityTrackerTests.swift */; };
 		3EDAE40C257458FE00B3845E /* ActivityTrackerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDAE40B257458FE00B3845E /* ActivityTrackerUITests.swift */; };
+		3EDAE41D257459D900B3845E /* NewActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDAE41C257459D900B3845E /* NewActivityController.swift */; };
+		3EDAE425257459E800B3845E /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDAE424257459E800B3845E /* SettingsController.swift */; };
+		3EDAE42A257459FD00B3845E /* MainActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDAE429257459FD00B3845E /* MainActivityController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +52,9 @@
 		3EDAE407257458FE00B3845E /* ActivityTrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ActivityTrackerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EDAE40B257458FE00B3845E /* ActivityTrackerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityTrackerUITests.swift; sourceTree = "<group>"; };
 		3EDAE40D257458FE00B3845E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3EDAE41C257459D900B3845E /* NewActivityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewActivityController.swift; sourceTree = "<group>"; };
+		3EDAE424257459E800B3845E /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
+		3EDAE429257459FD00B3845E /* MainActivityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainActivityController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +105,7 @@
 		3EDAE3E8257458FA00B3845E /* ActivityTracker */ = {
 			isa = PBXGroup;
 			children = (
+				3EDAE41C257459D900B3845E /* NewActivityController.swift */,
 				3EDAE3E9257458FA00B3845E /* AppDelegate.swift */,
 				3EDAE3EB257458FA00B3845E /* SceneDelegate.swift */,
 				3EDAE3ED257458FA00B3845E /* ViewController.swift */,
@@ -106,6 +113,8 @@
 				3EDAE3F2257458FD00B3845E /* Assets.xcassets */,
 				3EDAE3F4257458FD00B3845E /* LaunchScreen.storyboard */,
 				3EDAE3F7257458FD00B3845E /* Info.plist */,
+				3EDAE424257459E800B3845E /* SettingsController.swift */,
+				3EDAE429257459FD00B3845E /* MainActivityController.swift */,
 			);
 			path = ActivityTracker;
 			sourceTree = "<group>";
@@ -259,6 +268,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				3EDAE3EE257458FA00B3845E /* ViewController.swift in Sources */,
+				3EDAE42A257459FD00B3845E /* MainActivityController.swift in Sources */,
+				3EDAE425257459E800B3845E /* SettingsController.swift in Sources */,
+				3EDAE41D257459D900B3845E /* NewActivityController.swift in Sources */,
 				3EDAE3EA257458FA00B3845E /* AppDelegate.swift in Sources */,
 				3EDAE3EC257458FA00B3845E /* SceneDelegate.swift in Sources */,
 			);
