@@ -9,24 +9,57 @@ import UIKit
 
 class NewActivityController: UIViewController {
     
+    private let titleLabel: UILabel = UILabel()
+    private let activityTable: UITableView = UITableView()
+    
+    private let backButton: UIButton = UIButton()
+    private let saveButton: UIButton = UIButton()
+    
+    private var BUTTONOFFSET: CGFloat = 0.0
+    private var BUTTONSIZE: CGFloat = 0.0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = UIColor.lightGray
+        
+        BUTTONOFFSET = view.frame.width/3
+        BUTTONSIZE = view.frame.width/7
+        
         // New Activity Label
-        let titleLabel: UILabel = UILabel(frame: CGRect(x: 0, y: 45, width: view.frame.width, height: 20))
+        titleLabel.frame = CGRect(x: 0, y: 55, width: view.frame.width, height: 20)
         titleLabel.text = "New/Edit Activity"
         titleLabel.textAlignment = NSTextAlignment.center
         view.addSubview(titleLabel)
         
         // Button to go back to main screen
-        let backButton: UIButton = UIButton()
+        backButton.frame = CGRect(x: BUTTONOFFSET * 1 - BUTTONSIZE/2, y: view.frame.height - 100, width: BUTTONSIZE, height: BUTTONSIZE)
+        backButton.setImage(UIImage(named: "BackButton"), for: UIControl.State.normal)
+        backButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.handleTap(_:))))
         backButton.isUserInteractionEnabled = true
         view.addSubview(backButton)
         
         // Button to save new activity
-        let saveButton: UIButton = UIButton()
+        saveButton.frame = CGRect(x: BUTTONOFFSET * 2 - BUTTONSIZE/2, y: view.frame.height - 100, width: BUTTONSIZE, height: BUTTONSIZE)
+        saveButton.setImage(UIImage(named: "SaveButton"), for: UIControl.State.normal)
+        saveButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.handleTap(_:))))
         saveButton.isUserInteractionEnabled = true
         view.addSubview(saveButton)
+        
+    }
+    
+    // Method to handle tapping of buttons
+    @objc func handleTap(_ recognizer: UITapGestureRecognizer) {
+
+        // Back Button
+        if (recognizer.view == backButton) {
+            self.dismiss(animated: true, completion: nil)
+        }
+        
+        // Save Button
+        if (recognizer.view == saveButton) {
+           
+        }
         
     }
     
