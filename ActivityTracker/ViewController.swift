@@ -9,8 +9,6 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    var actController: ActivityController = ActivityController()
-    
     private let titleLabel: UILabel = UILabel()
     public let activityTable: UITableView = UITableView()
     
@@ -32,13 +30,17 @@ class ViewController: UIViewController {
         BUTTONSIZE = view.frame.width/7
         
         // Activity Tracker Label
-        titleLabel.frame = CGRect(x: 0, y: 55, width: view.frame.width, height: 20)
+        titleLabel.frame = CGRect(x: 0, y: 55, width: view.frame.width, height: 25)
         titleLabel.text = "Activity Tracker"
+        titleLabel.font = UIFont.systemFont(ofSize: 24.0)
         titleLabel.textAlignment = NSTextAlignment.center
         view.addSubview(titleLabel)
         
         // Activity table - populate from file
         activityTable.frame = CGRect(x: 25, y: 100, width: view.frame.width - 50, height: view.frame.height - 250)
+        activityTable.layer.borderColor = UIColor.black.cgColor
+        //activityTable.borderStyle = UITextField.BorderStyle.line
+        activityTable.layer.borderWidth = 1
         activityTable.allowsSelection = true
         activityTable.isUserInteractionEnabled = true
         view.addSubview(activityTable)
@@ -70,6 +72,9 @@ class ViewController: UIViewController {
         settingsButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.handleTap(_:))))
         settingsButton.isUserInteractionEnabled = true
         view.addSubview(settingsButton)
+        
+        ActivityController().createDirectory()
+        ActivityController().restoreFromFile()
             
         }
     
@@ -92,7 +97,7 @@ class ViewController: UIViewController {
         
         // Delete Button
         if (recognizer.view == deleteButton) {
-            deleteButton.addTarget(self, action: #selector(actController.deleteActivity), for: UIControl.Event.touchUpInside)
+            deleteButton.addTarget(self, action: #selector(ActivityController.deleteActivity), for: UIControl.Event.touchUpInside)
         }
         
         // Settings Button

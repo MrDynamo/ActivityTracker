@@ -18,10 +18,12 @@ class ActivityController: UIViewController, UITableViewDataSource, UITableViewDe
     private var BUTTONOFFSET: CGFloat = 0.0
     private var BUTTONSIZE: CGFloat = 0.0
     
+    let descriptionLabel: UILabel = UILabel()
     let descriptionTextField: UITextField = UITextField()
-    let dateTextField: UITextField = UITextField()
-    let startingTimeTextField: UITextField = UITextField()
-    let endingTimeTextField: UITextField = UITextField()
+    let startDateLabel: UILabel = UILabel()
+    let startDatePicker: UIDatePicker = UIDatePicker()
+    let endDateLabel: UILabel = UILabel()
+    let endDatePicker: UIDatePicker = UIDatePicker()
     
     let ACTIVITYCELL: String = "ActivityCell"
     
@@ -40,8 +42,9 @@ class ActivityController: UIViewController, UITableViewDataSource, UITableViewDe
         BUTTONSIZE = view.frame.width/7
         
         // New Activity Label
-        titleLabel.frame = CGRect(x: 0, y: 55, width: view.frame.width, height: 20)
+        titleLabel.frame = CGRect(x: 0, y: 55, width: view.frame.width, height: 25)
         titleLabel.text = "New/Edit Activity"
+        titleLabel.font = UIFont.systemFont(ofSize: 24.0)
         titleLabel.textAlignment = NSTextAlignment.center
         view.addSubview(titleLabel)
         
@@ -59,10 +62,16 @@ class ActivityController: UIViewController, UITableViewDataSource, UITableViewDe
         saveButton.isUserInteractionEnabled = true
         view.addSubview(saveButton)
         
-        descriptionTextField.frame = CGRect(x: view.center.x-135, y: 50, width: 270, height: 50)
+        // Description box label
+        descriptionLabel.frame = CGRect(x: 25, y: 100, width: view.frame.width - 50, height: 25)
+        descriptionLabel.text = "Activity Description"
+        descriptionLabel.textAlignment = NSTextAlignment.center
+        view.addSubview(descriptionLabel)
+        
+        // Description text field
+        descriptionTextField.frame = CGRect(x: 25, y: 150, width: view.frame.width - 50, height: 150)
         descriptionTextField.textColor = UIColor.black
-        descriptionTextField.font = UIFont.systemFont(ofSize: 24.0)
-        descriptionTextField.placeholder = "<Enter an activity description>"
+        descriptionTextField.font = UIFont.systemFont(ofSize: 24.0) 
         descriptionTextField.backgroundColor = UIColor.white
         descriptionTextField.keyboardType = UIKeyboardType.default
         descriptionTextField.returnKeyType = UIReturnKeyType.done
@@ -73,47 +82,31 @@ class ActivityController: UIViewController, UITableViewDataSource, UITableViewDe
         descriptionTextField.delegate = self
         view.addSubview(descriptionTextField)
         
-        dateTextField.frame = CGRect(x: view.center.x-135, y: 50, width: 270, height: 50)
-        dateTextField.textColor = UIColor.black
-        dateTextField.font = UIFont.systemFont(ofSize: 24.0)
-        dateTextField.placeholder = "<Enter date of activity>"
-        dateTextField.backgroundColor = UIColor.white
-        dateTextField.keyboardType = UIKeyboardType.default
-        dateTextField.returnKeyType = UIReturnKeyType.done
-        dateTextField.clearButtonMode = UITextField.ViewMode.always
-        dateTextField.layer.borderColor = UIColor.black.cgColor
-        dateTextField.borderStyle = UITextField.BorderStyle.line
-        dateTextField.layer.borderWidth = 1
-        dateTextField.delegate = self
-        view.addSubview(dateTextField)
+        // Start date/time label
+        startDateLabel.frame = CGRect(x: 25, y: 350, width: view.frame.width - 50, height: 25)
+        startDateLabel.text = "Starting Date/Time"
+        startDateLabel.textAlignment = NSTextAlignment.center
+        view.addSubview(startDateLabel)
         
-        startingTimeTextField.frame = CGRect(x: view.center.x-135, y: 50, width: 270, height: 50)
-        startingTimeTextField.textColor = UIColor.black
-        startingTimeTextField.font = UIFont.systemFont(ofSize: 24.0)
-        startingTimeTextField.placeholder = "<enter name>"
-        startingTimeTextField.backgroundColor = UIColor.white
-        startingTimeTextField.keyboardType = UIKeyboardType.default
-        startingTimeTextField.returnKeyType = UIReturnKeyType.done
-        startingTimeTextField.clearButtonMode = UITextField.ViewMode.always
-        startingTimeTextField.layer.borderColor = UIColor.black.cgColor
-        startingTimeTextField.borderStyle = UITextField.BorderStyle.line
-        startingTimeTextField.layer.borderWidth = 1
-        startingTimeTextField.delegate = self
-        view.addSubview(startingTimeTextField)
+        // Start date/time picker
+        startDatePicker.frame = CGRect(x: 25, y: 400, width: view.frame.width - 50, height: 50)
+        startDatePicker.backgroundColor = UIColor.white
+        startDatePicker.layer.borderColor = UIColor.black.cgColor
+        startDatePicker.layer.borderWidth = 1
+        view.addSubview(startDatePicker)
         
-        endingTimeTextField.frame = CGRect(x: view.center.x-135, y: 50, width: 270, height: 50)
-        endingTimeTextField.textColor = UIColor.black
-        endingTimeTextField.font = UIFont.systemFont(ofSize: 24.0)
-        endingTimeTextField.placeholder = "<enter name>"
-        endingTimeTextField.backgroundColor = UIColor.white
-        endingTimeTextField.keyboardType = UIKeyboardType.default
-        endingTimeTextField.returnKeyType = UIReturnKeyType.done
-        endingTimeTextField.clearButtonMode = UITextField.ViewMode.always
-        endingTimeTextField.layer.borderColor = UIColor.black.cgColor
-        endingTimeTextField.borderStyle = UITextField.BorderStyle.line
-        endingTimeTextField.layer.borderWidth = 1
-        endingTimeTextField.delegate = self
-        view.addSubview(endingTimeTextField)
+        // End date/time label
+        endDateLabel.frame = CGRect(x: 25, y: 475, width: view.frame.width - 50, height: 25)
+        endDateLabel.text = "Ending Date/Time"
+        endDateLabel.textAlignment = NSTextAlignment.center
+        view.addSubview(endDateLabel)
+        
+        // End date/time picker
+        endDatePicker.frame = CGRect(x: 25, y: 550, width: view.frame.width - 50, height: 50)
+        endDatePicker.backgroundColor = UIColor.white
+        endDatePicker.layer.borderColor = UIColor.black.cgColor
+        endDatePicker.layer.borderWidth = 1
+        view.addSubview(endDatePicker)
         
     }
     
@@ -141,7 +134,7 @@ class ActivityController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
-    private func createDirectory() {
+    public func createDirectory() {
         print("Before directory is created...")
         displayDirectory()
         var isDir: ObjCBool = true
@@ -183,7 +176,7 @@ class ActivityController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
-    private func restoreFromFile() {
+    public func restoreFromFile() {
         do {
             if let data = FileManager.default.contents(atPath: filePath) {
                 print("Retrieving data from file \(filePath)")
@@ -209,11 +202,11 @@ class ActivityController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
-    @objc func saveActivity() {
+    @objc class func saveActivity() {
         
     }
     
-    @objc func deleteActivity() {
+    @objc class func deleteActivity() {
         
     }
     
@@ -233,10 +226,10 @@ class ActivityController: UIViewController, UITableViewDataSource, UITableViewDe
 }
 
 class Activity: NSObject, NSCoding {
-    let ADESC: String = "Person ID"
-    let ADATE: String = "Person Name"
-    let ASTART: String = "Person Age"
-    let AEND: String = "Person Age"
+    let ADESC: String = "Activity Description"
+    let ADATE: String = "Activity Date"
+    let ASTART: String = "Activity Start"
+    let AEND: String = "Activity End"
     
     let desc: String?
     let date: String?

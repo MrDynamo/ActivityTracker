@@ -27,8 +27,9 @@ class SettingsController: UIViewController {
         BUTTONSIZE = view.frame.width/7
         
         // New Activity Label
-        titleLabel.frame = CGRect(x: 0, y: 55, width: view.frame.width, height: 20)
+        titleLabel.frame = CGRect(x: 0, y: 55, width: view.frame.width, height: 25)
         titleLabel.text = "Settings"
+        titleLabel.font = UIFont.systemFont(ofSize: 24.0)
         titleLabel.textAlignment = NSTextAlignment.center
         view.addSubview(titleLabel)
         
