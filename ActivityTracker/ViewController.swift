@@ -9,8 +9,10 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    var actController: ActivityController = ActivityController()
+    
     private let titleLabel: UILabel = UILabel()
-    private let activityTable: UITableView = UITableView()
+    public let activityTable: UITableView = UITableView()
     
     private let newButton: UIButton = UIButton()
     private let editButton: UIButton = UIButton()
@@ -76,10 +78,10 @@ class ViewController: UIViewController {
         
         // New Button
         if (recognizer.view == newButton) {
-            let nvc: NewActivityController = NewActivityController()
-            nvc.modalPresentationStyle = UIModalPresentationStyle.fullScreen
-            present(nvc, animated: true, completion: {() -> Void in
-                print("New activity view controller presented...")
+            let avc: ActivityController = ActivityController()
+            avc.modalPresentationStyle = UIModalPresentationStyle.fullScreen
+            present(avc, animated: true, completion: {() -> Void in
+                print("Activity view controller presented...")
             })
         }
         
@@ -90,8 +92,7 @@ class ViewController: UIViewController {
         
         // Delete Button
         if (recognizer.view == deleteButton) {
-            
-            
+            deleteButton.addTarget(self, action: #selector(actController.deleteActivity), for: UIControl.Event.touchUpInside)
         }
         
         // Settings Button
