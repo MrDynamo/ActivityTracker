@@ -15,8 +15,14 @@ class ViewController: UIViewController {
         
         view.backgroundColor = UIColor.lightGray
         
+        // Activity Tracker Label
+        let titleLabel: UILabel = UILabel(frame: CGRect(x: 0, y: 45, width: view.frame.width, height: 20))
+        titleLabel.text = "Activity Tracker"
+        titleLabel.textAlignment = NSTextAlignment.center
+        view.addSubview(titleLabel)
+        
         // Activity table - populate from file
-        let activityTable: UITableView = UITableView(frame: CGRect(x: 25, y: 60, width: view.frame.width - 50, height: view.frame.height - 200))
+        let activityTable: UITableView = UITableView(frame: CGRect(x: 25, y: 80, width: view.frame.width - 50, height: view.frame.height - 250))
         activityTable.allowsSelection = true
         activityTable.isUserInteractionEnabled = true
         view.addSubview(activityTable)
