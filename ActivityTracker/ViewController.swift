@@ -39,7 +39,6 @@ class ViewController: UIViewController {
         // Activity table - populate from file
         activityTable.frame = CGRect(x: 25, y: 100, width: view.frame.width - 50, height: view.frame.height - 250)
         activityTable.layer.borderColor = UIColor.black.cgColor
-        //activityTable.borderStyle = UITextField.BorderStyle.line
         activityTable.layer.borderWidth = 1
         activityTable.allowsSelection = true
         activityTable.isUserInteractionEnabled = true

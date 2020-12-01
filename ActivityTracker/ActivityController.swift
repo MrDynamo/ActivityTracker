@@ -10,7 +10,6 @@ import UIKit
 class ActivityController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
     
     private let titleLabel: UILabel = UILabel()
-    //private let activityTable: UITableView = UITableView()
     
     private let backButton: UIButton = UIButton()
     private let saveButton: UIButton = UIButton()
@@ -36,10 +35,13 @@ class ActivityController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor.lightGray
-        
+        view.backgroundColor = SettingsController().bgColor
+    
         BUTTONOFFSET = view.frame.width/3
         BUTTONSIZE = view.frame.width/7
+        
+        activityTableView.dataSource = self
+        activityTableView.delegate = self
         
         // New Activity Label
         titleLabel.frame = CGRect(x: 0, y: 55, width: view.frame.width, height: 25)
@@ -58,7 +60,7 @@ class ActivityController: UIViewController, UITableViewDataSource, UITableViewDe
         // Button to save new activity
         saveButton.frame = CGRect(x: BUTTONOFFSET * 2 - BUTTONSIZE/2, y: view.frame.height - 100, width: BUTTONSIZE, height: BUTTONSIZE)
         saveButton.setImage(UIImage(named: "SaveButton"), for: UIControl.State.normal)
-        saveButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.handleTap(_:))))
+        saveButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ActivityController.handleTap(_:))))
         saveButton.isUserInteractionEnabled = true
         view.addSubview(saveButton)
         
@@ -71,7 +73,7 @@ class ActivityController: UIViewController, UITableViewDataSource, UITableViewDe
         // Description text field
         descriptionTextField.frame = CGRect(x: 25, y: 150, width: view.frame.width - 50, height: 150)
         descriptionTextField.textColor = UIColor.black
-        descriptionTextField.font = UIFont.systemFont(ofSize: 24.0) 
+        descriptionTextField.font = UIFont.systemFont(ofSize: 24.0)
         descriptionTextField.backgroundColor = UIColor.white
         descriptionTextField.keyboardType = UIKeyboardType.default
         descriptionTextField.returnKeyType = UIReturnKeyType.done
@@ -120,7 +122,9 @@ class ActivityController: UIViewController, UITableViewDataSource, UITableViewDe
         
         // Save Button
         if (recognizer.view == saveButton) {
-            saveButton.addTarget(self, action: #selector(ActivityController.saveActivity), for: UIControl.Event.touchUpInside)
+            saveActivity()
+            activityTableView.reloadData()
+            self.dismiss(animated: true, completion: nil)
         }
         
     }
@@ -202,12 +206,25 @@ class ActivityController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
-    @objc class func saveActivity() {
+    @objc func clearActivities() {
+        activityList.removeAll()
         
+        deleteFile()
+        
+        activityTableView.reloadData()
     }
     
-    @objc class func deleteActivity() {
-        
+    @objc func saveActivity() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM/dd/yyyy"
+        let startDate = dateFormatter.string(from: startDatePicker.date)
+        let endDate = dateFormatter.string(from: endDatePicker.date)
+        activityList.append(Activity(desc: descriptionTextField.text, start: startDate, end: endDate))
+    }
+    
+    @objc func deleteActivity() {
+        activityList.remove(at: 0)
+        // get index of currently selected
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -227,34 +244,27 @@ class ActivityController: UIViewController, UITableViewDataSource, UITableViewDe
 
 class Activity: NSObject, NSCoding {
     let ADESC: String = "Activity Description"
-    let ADATE: String = "Activity Date"
     let ASTART: String = "Activity Start"
     let AEND: String = "Activity End"
     
     let desc: String?
-    let date: String?
     let start: String?
     let end: String?
     
-    //var age: Int32
-    
-    init(desc: String?, date: String?, start: String?, end: String?){
+    init(desc: String?, start: String?, end: String?){
         self.desc = desc
-        self.date = date
         self.start = start
         self.end = end
     }
     
     required init(coder aDecoder: NSCoder) {
         desc = aDecoder.decodeObject(forKey: ADESC) as? String
-        date = aDecoder.decodeObject(forKey: ADATE) as? String
         start = aDecoder.decodeObject(forKey: ASTART) as? String
         end = aDecoder.decodeObject(forKey: AEND) as? String
     }
     
     func encode(with aCoder: NSCoder) {
         aCoder.encode(desc, forKey: ADESC)
-        aCoder.encode(date, forKey: ADATE)
         aCoder.encode(start, forKey: ASTART)
         aCoder.encode(end, forKey: AEND)
     }
