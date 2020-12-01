@@ -9,14 +9,18 @@ import UIKit
 
 class ActivityController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
     
+    // Define title
     private let titleLabel: UILabel = UILabel()
     
+    // Define buttons
     private let backButton: UIButton = UIButton()
     private let saveButton: UIButton = UIButton()
     
+    // Button details
     private var BUTTONOFFSET: CGFloat = 0.0
     private var BUTTONSIZE: CGFloat = 0.0
     
+    // Define fields
     let descriptionLabel: UILabel = UILabel()
     let descriptionTextField: UITextField = UITextField()
     let startDateLabel: UILabel = UILabel()
@@ -24,11 +28,14 @@ class ActivityController: UIViewController, UITableViewDataSource, UITableViewDe
     let endDateLabel: UILabel = UILabel()
     let endDatePicker: UIDatePicker = UIDatePicker()
     
+    // Cell string
     let ACTIVITYCELL: String = "ActivityCell"
     
+    // File paths
     let dirPath: String = "\(NSHomeDirectory())/tmp"
     let filePath: String = "\(NSHomeDirectory())/tmp/activity.txt"
     
+    // Define table and activity list
     var activityTableView: UITableView = ViewController().activityTable
     var activityList = [Activity]()
     
@@ -46,8 +53,10 @@ class ActivityController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Set background color to user chosen, else default light gray
         view.backgroundColor = SettingsController().activityBgColor
     
+        // Set button details
         BUTTONOFFSET = view.frame.width/3
         BUTTONSIZE = view.frame.width/7
         
@@ -66,6 +75,7 @@ class ActivityController: UIViewController, UITableViewDataSource, UITableViewDe
         // Button to go back to main screen
         backButton.frame = CGRect(x: BUTTONOFFSET * 1 - BUTTONSIZE/2, y: view.frame.height - 100, width: BUTTONSIZE, height: BUTTONSIZE)
         backButton.setImage(UIImage(named: "BackButton"), for: UIControl.State.normal)
+        backButton.setImage(UIImage(named: "BackButtonH"), for: UIControl.State.highlighted)
         backButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.handleTap(_:))))
         backButton.isUserInteractionEnabled = true
         view.addSubview(backButton)
@@ -73,6 +83,7 @@ class ActivityController: UIViewController, UITableViewDataSource, UITableViewDe
         // Button to save new activity
         saveButton.frame = CGRect(x: BUTTONOFFSET * 2 - BUTTONSIZE/2, y: view.frame.height - 100, width: BUTTONSIZE, height: BUTTONSIZE)
         saveButton.setImage(UIImage(named: "SaveButton"), for: UIControl.State.normal)
+        saveButton.setImage(UIImage(named: "SaveButtonH"), for: UIControl.State.highlighted)
         saveButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ActivityController.handleTap(_:))))
         saveButton.isUserInteractionEnabled = true
         view.addSubview(saveButton)
@@ -216,7 +227,7 @@ class ActivityController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
-    private func deleteFile() {
+    public func deleteFile() {
         do {
             try FileManager.default.removeItem(atPath: filePath)
         }
@@ -235,15 +246,20 @@ class ActivityController: UIViewController, UITableViewDataSource, UITableViewDe
     
     @objc func saveActivity() {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM/dd/yyyy"
+        dateFormatter.dateFormat = "MM/dd/yyyy HH:mm"
         let startDate = dateFormatter.string(from: startDatePicker.date)
         let endDate = dateFormatter.string(from: endDatePicker.date)
-        activityList.append(Activity(desc: descriptionTextField.text, start: startDate, end: endDate))
+        activityList.append(Activity(id: Int32(activityList.count + 1), desc: descriptionTextField.text, start: startDate, end: endDate))
         saveToFile()
+        restoreFromFile()
+        activityTableView.reloadData()
     }
     
     @objc func deleteActivity() {
         activityList.remove(at: 0)
+        saveToFile()
+        restoreFromFile()
+        activityTableView.reloadData()
         // get index of currently selected
     }
     
@@ -261,30 +277,40 @@ class ActivityController: UIViewController, UITableViewDataSource, UITableViewDe
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //let activity: Activity
+        //activity = activityList[indexPath.row]
+    }
+    
 }
 
 class Activity: NSObject, NSCoding {
+    let AID: String = "Activity ID"
     let ADESC: String = "Activity Description"
     let ASTART: String = "Activity Start"
     let AEND: String = "Activity End"
     
+    let id: Int32
     let desc: String?
     let start: String?
     let end: String?
     
-    init(desc: String?, start: String?, end: String?){
+    init(id: Int32, desc: String?, start: String?, end: String?){
+        self.id = id
         self.desc = desc
         self.start = start
         self.end = end
     }
     
     required init(coder aDecoder: NSCoder) {
+        id = aDecoder.decodeInt32(forKey: AID)
         desc = aDecoder.decodeObject(forKey: ADESC) as? String
         start = aDecoder.decodeObject(forKey: ASTART) as? String
         end = aDecoder.decodeObject(forKey: AEND) as? String
     }
     
     func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: AID)
         aCoder.encode(desc, forKey: ADESC)
         aCoder.encode(start, forKey: ASTART)
         aCoder.encode(end, forKey: AEND)

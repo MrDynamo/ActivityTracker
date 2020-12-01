@@ -13,14 +13,17 @@ class ViewController: UIViewController {
     //var activityDataSource: ActivityController!
     //var activityDelegate: ActivityController!
     
+    // Create title and table
     private let titleLabel: UILabel = UILabel()
-    private let activityTable: UITableView = UITableView()
+    public let activityTable: UITableView = UITableView()
     
+    // Create buttons
     private let newButton: UIButton = UIButton()
     private let editButton: UIButton = UIButton()
     private let deleteButton: UIButton = UIButton()
     private let settingsButton: UIButton = UIButton()
     
+    // Button Details
     private var BUTTONOFFSET: CGFloat = 0.0
     private var BUTTONSIZE: CGFloat = 0.0
 
@@ -28,8 +31,10 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
+        // Set background color to user chosen, else default light gray
         view.backgroundColor = SettingsController().mainBgColor
         
+        // Set button details
         BUTTONOFFSET = view.frame.width/5
         BUTTONSIZE = view.frame.width/7
         
@@ -55,6 +60,7 @@ class ViewController: UIViewController {
         // Button to add new activity
         newButton.frame = CGRect(x: BUTTONOFFSET * 1 - BUTTONSIZE/2, y: view.frame.height - 100, width: BUTTONSIZE, height: BUTTONSIZE)
         newButton.setImage(UIImage(named: "NewButton"), for: UIControl.State.normal)
+        newButton.setImage(UIImage(named: "NewButtonH"), for: UIControl.State.highlighted)
         newButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.handleTap(_:))))
         newButton.isUserInteractionEnabled = true
         view.addSubview(newButton)
@@ -62,6 +68,7 @@ class ViewController: UIViewController {
         // Button to edit activity
         editButton.frame = CGRect(x: BUTTONOFFSET * 2 - BUTTONSIZE/2, y: view.frame.height - 100, width: BUTTONSIZE, height: BUTTONSIZE)
         editButton.setImage(UIImage(named: "EditButton"), for: UIControl.State.normal)
+        editButton.setImage(UIImage(named: "EditButtonH"), for: UIControl.State.highlighted)
         editButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.handleTap(_:))))
         editButton.isUserInteractionEnabled = true
         view.addSubview(editButton)
@@ -69,6 +76,7 @@ class ViewController: UIViewController {
         // Button to delete activity
         deleteButton.frame = CGRect(x: BUTTONOFFSET * 3 - BUTTONSIZE/2, y: view.frame.height - 100, width: BUTTONSIZE, height: BUTTONSIZE)
         deleteButton.setImage(UIImage(named: "DeleteButton"), for: UIControl.State.normal)
+        deleteButton.setImage(UIImage(named: "DeleteButtonH"), for: UIControl.State.highlighted)
         deleteButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.handleTap(_:))))
         deleteButton.isUserInteractionEnabled = true
         view.addSubview(deleteButton)
@@ -76,12 +84,20 @@ class ViewController: UIViewController {
         // Button to access settings menu
         settingsButton.frame = CGRect(x: BUTTONOFFSET * 4 - BUTTONSIZE/2, y: view.frame.height - 100, width: BUTTONSIZE, height: BUTTONSIZE)
         settingsButton.setImage(UIImage(named: "SettingsButton"), for: UIControl.State.normal)
+        settingsButton.setImage(UIImage(named: "SettingsButtonH"), for: UIControl.State.highlighted)
         settingsButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.handleTap(_:))))
         settingsButton.isUserInteractionEnabled = true
         view.addSubview(settingsButton)
         
-        ActivityController(tableView: activityTable).createDirectory()
-        ActivityController(tableView: activityTable).restoreFromFile()
+        //ActivityController(tableView: activityTable).createDirectory()
+        //ActivityController(tableView: activityTable).restoreFromFile()
+        
+        // Reload table
+        activityTable.reloadData()
+        
+        // Reload file
+        ActivityController().createDirectory()
+        ActivityController().restoreFromFile()
             
     }
     
@@ -90,7 +106,8 @@ class ViewController: UIViewController {
         
         // New Button
         if (recognizer.view == newButton) {
-            let avc: ActivityController = ActivityController(tableView: activityTable)
+            //let avc: ActivityController = ActivityController(tableView: activityTable)
+            let avc: ActivityController = ActivityController()
             avc.modalPresentationStyle = UIModalPresentationStyle.fullScreen
             present(avc, animated: true, completion: {() -> Void in
                 print("Activity view controller presented...")
