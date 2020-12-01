@@ -9,8 +9,12 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    //var activityTable: UITableView!
+    //var activityDataSource: ActivityController!
+    //var activityDelegate: ActivityController!
+    
     private let titleLabel: UILabel = UILabel()
-    public let activityTable: UITableView = UITableView()
+    private let activityTable: UITableView = UITableView()
     
     private let newButton: UIButton = UIButton()
     private let editButton: UIButton = UIButton()
@@ -24,7 +28,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        view.backgroundColor = UIColor.lightGray
+        view.backgroundColor = SettingsController().mainBgColor
         
         BUTTONOFFSET = view.frame.width/5
         BUTTONSIZE = view.frame.width/7
@@ -37,11 +41,15 @@ class ViewController: UIViewController {
         view.addSubview(titleLabel)
         
         // Activity table - populate from file
+        //activityTable = UITableView()
         activityTable.frame = CGRect(x: 25, y: 100, width: view.frame.width - 50, height: view.frame.height - 250)
         activityTable.layer.borderColor = UIColor.black.cgColor
         activityTable.layer.borderWidth = 1
         activityTable.allowsSelection = true
         activityTable.isUserInteractionEnabled = true
+        //activityTable.dataSource = activityDataSource
+        //activityTable.delegate = activityDelegate
+        //activityTable.register(UITableViewCell.self, forCellReuseIdentifier: "ActivityCell")
         view.addSubview(activityTable)
         
         // Button to add new activity
@@ -72,17 +80,17 @@ class ViewController: UIViewController {
         settingsButton.isUserInteractionEnabled = true
         view.addSubview(settingsButton)
         
-        ActivityController().createDirectory()
-        ActivityController().restoreFromFile()
+        ActivityController(tableView: activityTable).createDirectory()
+        ActivityController(tableView: activityTable).restoreFromFile()
             
-        }
+    }
     
     // Method to handle tapping of buttons
     @objc func handleTap(_ recognizer: UITapGestureRecognizer) {
         
         // New Button
         if (recognizer.view == newButton) {
-            let avc: ActivityController = ActivityController()
+            let avc: ActivityController = ActivityController(tableView: activityTable)
             avc.modalPresentationStyle = UIModalPresentationStyle.fullScreen
             present(avc, animated: true, completion: {() -> Void in
                 print("Activity view controller presented...")

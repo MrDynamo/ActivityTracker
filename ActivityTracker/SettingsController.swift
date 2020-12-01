@@ -18,12 +18,14 @@ class SettingsController: UIViewController {
     private var BUTTONOFFSET: CGFloat = 0.0
     private var BUTTONSIZE: CGFloat = 0.0
     
-    public var bgColor: UIColor = UIColor.lightGray
+    public var mainBgColor: UIColor = UIColor.lightGray
+    public var activityBgColor: UIColor = UIColor.lightGray
+    public var buttonColor: UIColor = UIColor.black
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = bgColor
+        view.backgroundColor = UIColor.lightGray
         
         BUTTONOFFSET = view.frame.width/3
         BUTTONSIZE = view.frame.width/7

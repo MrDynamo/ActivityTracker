@@ -32,16 +32,29 @@ class ActivityController: UIViewController, UITableViewDataSource, UITableViewDe
     var activityTableView: UITableView = ViewController().activityTable
     var activityList = [Activity]()
     
+    /*
+    init(tableView: UITableView) {
+        self.activityTableView = tableView
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+ */
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = SettingsController().bgColor
+        view.backgroundColor = SettingsController().activityBgColor
     
         BUTTONOFFSET = view.frame.width/3
         BUTTONSIZE = view.frame.width/7
         
+        // Table delegate and data source
         activityTableView.dataSource = self
         activityTableView.delegate = self
+        activityTableView.register(UITableViewCell.self, forCellReuseIdentifier: ACTIVITYCELL)
         
         // New Activity Label
         titleLabel.frame = CGRect(x: 0, y: 55, width: view.frame.width, height: 25)
@@ -110,6 +123,9 @@ class ActivityController: UIViewController, UITableViewDataSource, UITableViewDe
         endDatePicker.layer.borderWidth = 1
         view.addSubview(endDatePicker)
         
+        createDirectory()
+        restoreFromFile()
+        
     }
     
     // Method to handle tapping of buttons
@@ -117,12 +133,15 @@ class ActivityController: UIViewController, UITableViewDataSource, UITableViewDe
 
         // Back Button
         if (recognizer.view == backButton) {
+            restoreFromFile()
+            activityTableView.reloadData()
             self.dismiss(animated: true, completion: nil)
         }
         
         // Save Button
         if (recognizer.view == saveButton) {
             saveActivity()
+            restoreFromFile()
             activityTableView.reloadData()
             self.dismiss(animated: true, completion: nil)
         }
@@ -220,6 +239,7 @@ class ActivityController: UIViewController, UITableViewDataSource, UITableViewDe
         let startDate = dateFormatter.string(from: startDatePicker.date)
         let endDate = dateFormatter.string(from: endDatePicker.date)
         activityList.append(Activity(desc: descriptionTextField.text, start: startDate, end: endDate))
+        saveToFile()
     }
     
     @objc func deleteActivity() {
@@ -233,6 +253,7 @@ class ActivityController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ACTIVITYCELL) ?? UITableViewCell(style: UITableViewCell.CellStyle.subtitle, reuseIdentifier: ACTIVITYCELL)
+        //let cell = ActivityCell(style: .default, reuseIdentifier: ACTIVITYCELL)
         let activity: Activity
         activity = activityList[indexPath.row]
         cell.textLabel?.text = activity.desc
@@ -269,3 +290,21 @@ class Activity: NSObject, NSCoding {
         aCoder.encode(end, forKey: AEND)
     }
 }
+
+/*
+class ActivityCell: UITableViewCell {
+    var label: UILabel!
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        label = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 20))
+        label.textColor = .black
+        label.backgroundColor = .yellow
+        contentView.addSubview(label)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+}
+ */
